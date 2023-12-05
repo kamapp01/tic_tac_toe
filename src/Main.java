@@ -18,7 +18,7 @@ public class Main {
 
     public static String symbol;
 
-
+    public static boolean winnerFound = false;
 
 
 
@@ -27,27 +27,44 @@ public class Main {
 
     public static void main(String[] args) {
 
-        Players player1 = new Players("Knud");
-        Players player2 = new Players("Erik");
+        // creating and initializing two player objects
+        Players player1 = new Players(userInputString("Player 1, please enter your name here: "));
+        Players player2 = new Players(userInputString("Player 2, please enter your name here: "));
 
         // game-loop
-        for (int i = 0; i < 3; i++) {
+        //for (int i = 0; i < 9; i++) {
+        while (!winnerFound){
+            for (int i = 0; i < 9 ; i++) {
 
-            if (i % 2 == 0) {
-                System.out.printf("Player 1: \n%s it's your turn\n\n",player1.getName());
-                symbol = "x";
-            }
+                if (i % 2 == 0) {
+                    System.out.printf("Player 1: \n%s it's your turn\n\n", player1.getName());
+                    symbol = "x";
+                } else {
+                    System.out.printf("Player 2: \n%s it's your turn\n\n", player2.getName());
+                    symbol = "o";
+                }
 
-            else {
-                System.out.printf("Player 2: \n%s it's your turn\n\n",player2.getName());
-                symbol = "o";
+                theGame(symbol);
+
+                if (winnerFound){
+                    break;
+                }
             }
-            theGame(symbol);
         }
     }
 
 
+    public static String userInputString (String prompt){
 
+        // print prompt message
+        System.out.printf(prompt);
+
+        // create scanner obj
+        Scanner scanner = new Scanner(System.in);
+
+        // stores input
+        return scanner.nextLine();
+    }
 
 
 
@@ -83,7 +100,7 @@ public class Main {
         }
     }
 
-    public static void theGame (String playerSymbol){
+    public static boolean theGame (String playerSymbol){
 
         System.out.println("Possible moves:");
         printGameBoard();
@@ -139,6 +156,10 @@ public class Main {
         }
 
         printGame();
+
+        check3InARow(symbol);
+
+        return winnerFound;
     }
 
 
@@ -165,11 +186,39 @@ public class Main {
 
 
 
-    public static boolean check3InARow (){
+    public static boolean check3InARow (String playerSymbol){
         System.out.println();
-        return true;
-    }
 
+        for (int i = 0 ; i <= 4 ; i += 2) {
+
+            // checks the 3 rows
+            if (gameArray[i][0] == symbol && gameArray[i][2] == symbol && gameArray[i][4] == symbol){
+                System.out.println("We have a winner");
+                return winnerFound;
+            }
+
+            // checks the 3 column
+            if (gameArray[0][i] == symbol && gameArray[0][i] == symbol && gameArray[0][i] == symbol){
+                System.out.println("We have a winner");
+                return winnerFound;
+            }
+        }
+
+        // checks the one diagonal
+        if (gameArray[0][0] == symbol && gameArray[2][2] == symbol && gameArray[4][4] == symbol){
+            System.out.println("We have a winner");
+            return winnerFound;
+        }
+
+        // checks the other diagonal
+        else if (gameArray[0][4] == symbol && gameArray[2][2] == symbol && gameArray[4][0] == symbol){
+            System.out.println("We have a winner");
+            return winnerFound;
+        }
+
+        else
+            return !winnerFound;
+    }
 
 
 }
