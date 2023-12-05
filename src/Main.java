@@ -27,16 +27,19 @@ public class Main {
 
     public static void main(String[] args) {
 
+        Players player1 = new Players("Knud");
+        Players player2 = new Players("Erik");
+
         // game-loop
         for (int i = 0; i < 3; i++) {
 
             if (i % 2 == 0) {
-                System.out.println("Player 1 it's your turn\n");
+                System.out.printf("Player 1: \n%s it's your turn\n\n",player1.getName());
                 symbol = "x";
             }
 
             else {
-                System.out.println("\nPlayer 2 it's your turn\n");
+                System.out.printf("Player 2: \n%s it's your turn\n\n",player2.getName());
                 symbol = "o";
             }
             theGame(symbol);
