@@ -1,3 +1,4 @@
+import java.util.Objects;
 import java.util.Scanner;
 
 public class Main {
@@ -16,9 +17,17 @@ public class Main {
                                                  {"-" , "+" , "-" , "+" , "-"},
                                                  {"" , "|" , "" , "|" , ""} };
 
+
+    // variable to handle the players symbols; x and o
     public static String symbol;
 
+    public static String playerX = "x";
+
+    public static String playerO = "o";
+
     public static boolean winnerFound = false;
+
+    public static boolean winnerStatus;
 
 
 
@@ -31,26 +40,23 @@ public class Main {
         Players player1 = new Players(userInputString("Player 1, please enter your name here: "));
         Players player2 = new Players(userInputString("Player 2, please enter your name here: "));
 
+
         // game-loop
-        //for (int i = 0; i < 9; i++) {
-        while (!winnerFound){
-            for (int i = 0; i < 9 ; i++) {
+        for (int i = 0; i < 9; i++) {
 
                 if (i % 2 == 0) {
                     System.out.printf("Player 1: \n%s it's your turn\n\n", player1.getName());
-                    symbol = "x";
+                    symbol = playerX;
                 } else {
                     System.out.printf("Player 2: \n%s it's your turn\n\n", player2.getName());
-                    symbol = "o";
+                    symbol = playerO;
                 }
 
                 theGame(symbol);
-
-                if (winnerFound){
-                    break;
-                }
-            }
+                boolean winnerStatus = check3InARow(symbol);
+                System.out.println("efter check metode: "+winnerStatus);
         }
+        System.out.println("YEAH!");
     }
 
 
@@ -59,18 +65,25 @@ public class Main {
         // print prompt message
         System.out.printf(prompt);
 
-        // create scanner obj
+        // create scanner object
         Scanner scanner = new Scanner(System.in);
 
-        // stores input
+        // returns input
         return scanner.nextLine();
     }
 
 
-
+    /**
+     * This method
+     *
+     * @param prompt
+     * @param min
+     * @param max
+     * @return
+     */
     public static int userInputInt (String prompt,int min, int max) {
 
-        // create scanner obj
+        // create scanner object
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
@@ -86,21 +99,31 @@ public class Main {
 
                     // doMagic!
                     scanner.nextLine();
+
                     return input;
+
                 } else {
-                    // error message
+                    // error message - if input is less than min value or more than max value
                     System.out.printf("Error: please enter a number between %d and %d\n", min, max);
                 }
-            } else {
-                // error message
+            }
+            else {
+                // error message - if input isn't a number
                 System.out.printf("Invalid input. please enter a number between %d and %d\n", min, max);
+
                 //clean buffer
                 scanner.reset().next();
             }
         }
     }
 
-    public static boolean theGame (String playerSymbol){
+    /**
+     * This method
+     *
+     * @param playerSymbol
+     * @return
+     */
+    public static void theGame (String playerSymbol){
 
         System.out.println("Possible moves:");
         printGameBoard();
@@ -157,12 +180,13 @@ public class Main {
 
         printGame();
 
-        check3InARow(symbol);
-
-        return winnerFound;
+        //check3InARow(symbol);
     }
 
 
+    /**
+     * This method prints the game board as a 2D array
+     */
     public static void printGameBoard (){
         for (int i = 0; i < gameBoardArray.length; i ++){
 
@@ -173,6 +197,9 @@ public class Main {
         }
     }
 
+    /**
+     * This method prints the game as a 2D array
+     */
     public static void printGame (){
         for (int i = 0; i < gameArray.length; i ++){
 
@@ -184,8 +211,12 @@ public class Main {
     }
 
 
-
-
+    /**
+     * This method checks if a player has 3 in a row.
+     *
+     * @param playerSymbol
+     * @return
+     */
     public static boolean check3InARow (String playerSymbol){
         System.out.println();
 
@@ -193,31 +224,32 @@ public class Main {
 
             // checks the 3 rows
             if (gameArray[i][0] == symbol && gameArray[i][2] == symbol && gameArray[i][4] == symbol){
-                System.out.println("We have a winner");
-                return winnerFound;
+                System.out.println("We have a winner1");
+                return true;
             }
 
             // checks the 3 column
-            if (gameArray[0][i] == symbol && gameArray[0][i] == symbol && gameArray[0][i] == symbol){
-                System.out.println("We have a winner");
-                return winnerFound;
+            if (gameArray[0][i] == symbol && gameArray[2][i] == symbol && gameArray[4][i] == symbol){
+                System.out.println("We have a winner2");
+                return true;
             }
         }
 
         // checks the one diagonal
         if (gameArray[0][0] == symbol && gameArray[2][2] == symbol && gameArray[4][4] == symbol){
-            System.out.println("We have a winner");
-            return winnerFound;
+            System.out.println("We have a winner3");
+            return true;
         }
 
         // checks the other diagonal
         else if (gameArray[0][4] == symbol && gameArray[2][2] == symbol && gameArray[4][0] == symbol){
-            System.out.println("We have a winner");
-            return winnerFound;
+            System.out.println("We have a winner4");
+            return true;
         }
 
         else
-            return !winnerFound;
+            System.out.println(winnerFound);
+            return false;
     }
 
 
