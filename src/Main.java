@@ -21,42 +21,51 @@ public class Main {
     // variable to handle the players symbols; x and o
     public static String symbol;
 
-    public static String playerX = "x";
-
-    public static String playerO = "o";
-
-    public static boolean winnerFound = false;
+    // variable to handle if player 1 or player 2
+    public static String player;
 
     public static boolean winnerStatus;
 
-
-    //LORTET VIRKER IKKE!
 
 
 
     public static void main(String[] args) {
 
-        // creating and initializing two player objects
+        // creating and initializing two player objects using a scanner and a user input
         Players player1 = new Players(userInputString("Player 1, please enter your name here: "));
         Players player2 = new Players(userInputString("Player 2, please enter your name here: "));
 
 
-        // game-loop
+        // game loop that keeps track of the player order - if no winner, the game stops after ninth round
         for (int i = 0; i < 9; i++) {
 
-                if (i % 2 == 0) {
-                    System.out.printf("Player 1: \n%s it's your turn\n\n", player1.getName());
-                    symbol = playerX;
-                } else {
-                    System.out.printf("Player 2: \n%s it's your turn\n\n", player2.getName());
-                    symbol = playerO;
+            if (i % 2 == 0) {
+                System.out.printf("Player 1: \n%s it's your turn\n\n", player1.getName());
+                player = "Player 1";
+                symbol = "x";
+                }
+            else {
+                System.out.printf("Player 2: \n%s it's your turn\n\n", player2.getName());
+                player = "Player 2";
+                symbol = "o";
                 }
 
                 theGame(symbol);
+
+                // local variable to store the result from the "check3InARow" method
                 boolean winnerStatus = check3InARow(symbol);
-                System.out.println("efter check metode: "+winnerStatus);
+
+                // breaks the game loop if one of the players have 3 in a row (winnerStatus = true)
+                if (winnerStatus){
+                    i = 10;
+                    System.out.println("YEAH! We have a winner!");
+                    System.out.printf("Congrats %s - big applause!",player);
+
+                // writes an "end-message" if no winner found (winnerStatus = false) during nine rounds
+                } else if (!winnerStatus && i == 8) {
+                    System.out.println("No winner found. Maybe you want to try again? :D");
+                }
         }
-        System.out.println("YEAH!");
     }
 
 
@@ -224,31 +233,26 @@ public class Main {
 
             // checks the 3 rows
             if (gameArray[i][0] == symbol && gameArray[i][2] == symbol && gameArray[i][4] == symbol){
-                System.out.println("We have a winner1");
                 return true;
             }
 
             // checks the 3 column
             if (gameArray[0][i] == symbol && gameArray[2][i] == symbol && gameArray[4][i] == symbol){
-                System.out.println("We have a winner2");
                 return true;
             }
         }
 
         // checks the one diagonal
         if (gameArray[0][0] == symbol && gameArray[2][2] == symbol && gameArray[4][4] == symbol){
-            System.out.println("We have a winner3");
             return true;
         }
 
         // checks the other diagonal
         else if (gameArray[0][4] == symbol && gameArray[2][2] == symbol && gameArray[4][0] == symbol){
-            System.out.println("We have a winner4");
             return true;
         }
 
         else
-            System.out.println(winnerFound);
             return false;
     }
 
