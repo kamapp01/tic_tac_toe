@@ -30,7 +30,7 @@ public class Main {
     public static boolean winnerStatus;
 
 
-
+    //LORTET VIRKER IKKE!
 
 
 
