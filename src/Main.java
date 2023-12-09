@@ -24,6 +24,7 @@ public class Main {
     // variable to handle player names
     public static String player;
 
+    // variable to handle if there is a winner
     public static boolean winnerStatus;
 
 
